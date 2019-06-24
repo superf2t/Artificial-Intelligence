@@ -4,12 +4,12 @@ import pandas as pd
 from sklearn.metrics import mean_squared_error
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
-from sklearn.datasets import  make_classification
+from sklearn.datasets import make_classification
 
 iris = load_iris()
-data=iris.data
+data = iris.data
 target = iris.target
-X_train,X_test,y_train,y_test = train_test_split(data,target,test_size=0.2)
+X_train, X_test, y_train, y_test = train_test_split(data, target, test_size=0.2)
 
 
 # 加载你的数据
@@ -42,7 +42,7 @@ params = {
 
 print('Start training...')
 # 训练 cv and train
-gbm = lgb.train(params,lgb_train,num_boost_round=20,valid_sets=lgb_eval,early_stopping_rounds=5)
+gbm = lgb.train(params, lgb_train, num_boost_round=20, valid_sets=lgb_eval, early_stopping_rounds=5)
 
 print('Save model...')
 # 保存模型到文件
