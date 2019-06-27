@@ -40,8 +40,37 @@ plt.legend(['Normal dist. ($\mu=$ {:.2f} and $\sigma=$ {:.2f} )'.format(mu, sigm
             loc='best')
 plt.ylabel('Frequency')
 plt.title('SalePrice distribution')
+plt.show()
 
 #Get also the QQ-plot
 fig = plt.figure()
 res = stats.probplot(train['SalePrice'], plot=plt)
 plt.show()
+
+#We use the numpy fuction log1p which  applies log(1+x) to all elements of the column
+train['SalePrice'] = np.log1p(train['SalePrice'] )
+
+#Check the new distribution
+sns.distplot(train['SalePrice'] , fit=norm);
+
+# Get the fitted parameters used by the function
+(mu, sigma) = norm.fit(train['SalePrice'])
+print( '\n mu = {:.2f} and sigma = {:.2f}\n'.format(mu, sigma))
+
+#Now plot the distribution
+plt.legend(['Normal dist. ($\mu=$ {:.2f} and $\sigma=$ {:.2f} )'.format(mu, sigma)],
+            loc='best')
+plt.ylabel('Frequency')
+plt.title('SalePrice distribution')
+
+#Get also the QQ-plot
+fig = plt.figure()
+res = stats.probplot(train['SalePrice'], plot=plt)
+plt.show()
+
+
+all_data = pd.concat((train, test), axis=0)
+print(all_data.info())
+
+
+

@@ -2,9 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import learning_curve
 
-
-def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None,
-                        n_jobs=1, train_sizes=np.linspace(.01, 1.0, 50)):
+def plot_learning_curve(estimator, title, X, y, ylim=None,
+                        cv=None, n_jobs=1, train_sizes=np.linspace(.01, 1.0, 50)):
     plt.figure()
     plt.title(title)
     if ylim is not None:
