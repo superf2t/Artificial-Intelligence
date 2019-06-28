@@ -1,5 +1,10 @@
 import matplotlib.pyplot as plt
-from sklearn.metrics import  roc_curve, roc_auc_score
+from sklearn.metrics import roc_curve, roc_auc_score
+
+ScoreDict = {"accuracy": "metrics.accuracy_score",
+             "roc_auc": "metrics.roc_auc_score",
+             "neg_mean_squared_error": "metrics.mean_squared_error",
+}
 
 def plot_roc_curve(y_test, y_predicts, model_names):
     plt.figure()

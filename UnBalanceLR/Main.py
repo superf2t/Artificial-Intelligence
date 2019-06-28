@@ -3,13 +3,14 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import roc_auc_score,classification_report, roc_curve
+from sklearn.metrics import roc_auc_score, classification_report, roc_curve
 from PlotROCCurve import plot_roc_curve
 import lightgbm as lgb
 from sklearn.naive_bayes import GaussianNB
-from MyEnsemble import AverageEnsemble, StackingClassifier, BlendingClassifier
+from MyEnsemble import AverageEnsemble, StackingClassifier, BlendingClassifier, StackingAveragedModels
 import xgboost as xgb
 from sklearn.preprocessing import Binarizer
+from PlotLearningCurve import plot_learning_curve
 
 column_name = ['Sample code number', 'Clump Thickness', 'Uniformity of Cell Size', 'Uniformity of Cell Shape',
                    'Marginal Adhesion', 'Single Epithelial Cell Size', 'Bare Nuclei', 'Bland Chromatin',
@@ -21,22 +22,34 @@ print(cancer.info())
 #缺失值处理
 cancer = cancer.replace(to_replace="?", value=np.nan)
 cancer = cancer.dropna()
+print(cancer.shape)
 print(cancer.info())
-
-#数据集划分
-x = cancer.iloc[:,1:-2]
+print(cancer.dtypes)
+cancer[['Bare Nuclei']] = cancer[['Bare Nuclei']].astype(int)
+cancer = cancer.drop('Bare Nuclei', axis=1)
 binarizer = Binarizer(threshold=3)
 cancer[['Class']] = binarizer.fit_transform(cancer[['Class']])
-y = cancer.iloc[:, -1]
-print(y)
-
-#划分数据集
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3)
+print(cancer.dtypes)
+# pd.get_dummies(cancer[column_name[1:-1]])
 
 #标准化处理
 transfer = StandardScaler()
-x_train = transfer.fit_transform(x_train)
-x_test = transfer.fit_transform(x_test)
+cancer[['Sample code number']] = transfer.fit_transform(cancer[['Sample code number']])
+
+all_data_na = (cancer.isnull().sum() / len(cancer)) * 100
+all_data_na = all_data_na.drop(all_data_na[all_data_na == 0].index).sort_values(ascending=False)[:30]
+missing_data = pd.DataFrame({'Missing Ratio': all_data_na})
+print(missing_data.head(20))
+
+#划分数据集
+x = cancer.iloc[:,1:-2]
+y = cancer.iloc[:, -1]
+print(y)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3)
+
+print(x_train)
+
+
 
 y_predicts = []
 model_names = []
@@ -89,9 +102,16 @@ y_predict = BlendingClassifier(clfs=[estimator0, estimator1, estimator2], train_
 model_names.append('Blending')
 y_predicts.append(y_predict)
 
-y_predict = StackingClassifier(clfs=[estimator1, estimator2], train_x=x_train, train_y=y_train, test_x=x_test)
+# y_predict = StackingClassifier(clfs=[estimator1, estimator2], train_x=x_train, train_y=y_train, test_x=x_test)
+# model_names.append('Stacking')
+# y_predicts.append(y_predict)
+
+estimatorx1 = StackingAveragedModels(base_models=[estimator0, estimator1, estimator2], meta_model=LogisticRegression())
+estimatorx1.fit(x_train, y_train)
+y_predict = estimatorx1.predict(x_test)
 model_names.append('Stacking')
 y_predicts.append(y_predict)
+
 
 print("预测值为:\n", y_predict)
 print("真实值与预测值比对:\n",y_predict == y_test)
@@ -113,6 +133,8 @@ print(fp)
 plt = plot_roc_curve(y_test, y_predicts, model_names)
 plt.show()
 
+plt = plot_learning_curve(estimator3, "TT", x_train, y_train)
+plt.show()
 
 
 
