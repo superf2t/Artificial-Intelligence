@@ -1,5 +1,7 @@
+import os
 import tensorflow as tf
 from numpy.random import RandomState
+
 
 #定义训练数据batch的大小
 batch_size = 8
@@ -12,7 +14,7 @@ y_ = tf.placeholder(tf.float32, shape=(None, 1), name='y-input')
 #定义神经网络前向传播的过程
 a = tf.matmul(x, w1)
 y = tf.matmul(a, w2)
-y = tf.sigmoid(y)
+y = tf.sigmoid(y, name="predict")
 #定义损失函数:交叉熵
 cross_entropy = -tf.reduce_mean(y_ * tf.log(tf.clip_by_value(y, 1e-10, 1.0))
      +(1-y_) * tf.log(tf.clip_by_value(1 - y, 1e-10, 1.0)))
@@ -25,6 +27,8 @@ dataset_size = 128
 X = rdm.rand(dataset_size, 2)
 #认为x1+x2<1的样本都认为是正样本，用0表示负样本，1来表示正样本
 Y = [[int(x1+x2 < 1)] for (x1, x2) in X]
+
+saver = tf.train.Saver()
 
 with tf.Session() as sess:
     #初始化变量
@@ -44,5 +48,24 @@ with tf.Session() as sess:
 
     print(sess.run(w1))
     print(sess.run(w2))
-    result = sess.run(y, feed_dict={x: [[0.5, 0.3]]})
+    result = sess.run(y, feed_dict={x: [[0.5, 0.6]]})
+    print("Train: ")
     print(result)
+    #保存模型
+    saver.save(sess, './ckpt_dir/model')
+
+if __name__ == "__main__":
+    with tf.Session() as sess:
+        if os.path.exists('./ckpt_dir/model.meta'):
+            #恢复模型的图结构
+            saver = tf.train.import_meta_graph('./ckpt_dir/model.meta')
+            #恢复模型的参数
+            saver.restore(sess, tf.train.latest_checkpoint('./'))
+            graph = tf.get_default_graph()
+            #通过name获得操作
+            operation_to_restore = graph.get_tensor_by_name("predict:0")
+            result = sess.run(operation_to_restore, feed_dict={x: [[0.5, 0.6]]})
+            print("SaveAndRestore: ")
+            print(result)
+
+
