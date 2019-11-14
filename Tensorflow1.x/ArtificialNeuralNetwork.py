@@ -42,6 +42,7 @@ with tf.Session() as sess:
         #通过选取的样本训练神经网络并更新参数
         sess.run(train_step, feed_dict={x: X[start:end], y_: Y[start:end]})
 
+    print("After training:")
     print(sess.run(w1))
     print(sess.run(w2))
     result = sess.run(y, feed_dict={x: [[0.5, 0.3]]})

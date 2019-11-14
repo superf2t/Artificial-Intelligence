@@ -1,4 +1,4 @@
-from sklearn.linear_model import Ridge
+rom sklearn.linear_model import Ridge
 from sklearn.model_selection import cross_val_score
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import BaggingRegressor
