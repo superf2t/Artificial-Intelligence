@@ -12,3 +12,5 @@ with tf.Session() as session:
     init = tf.global_variables_initializer()
     session.run(init)
     print (session.run([output], feed_dict={input:[7.]}))
+
+
