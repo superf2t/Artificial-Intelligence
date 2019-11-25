@@ -32,7 +32,6 @@ def get_weight(shape, lambda1):
 
 x = tf.placeholder(tf.float32, shape=(None, 2))
 y_ = tf.placeholder(tf.float32, shape=(None, 1))
-sample_size = len(data)
 #定义每一层网络中节点的个数
 layer_dimension = [2, 10, 5, 3, 1]
 #神经网络的层数
@@ -56,7 +55,7 @@ for i in range(1, n_layers):
 y = cur_layer
 #在定义神经网络前向传播的同时已经将所有的L2正则化损失加入了图上的集合,
 #这里只需要计算刻画模型在训练数据上表现的损失函数
-mse_loss = tf.reduce_sum(tf.pow(y_ - y, 2)) / sample_size
+mse_loss = tf.reduce_mean(tf.square(y_ - y))
 #将均方差损失函数加入损失集合
 tf.add_to_collection('losses', mse_loss)
 #get_collection返回一个列表，这列表是所有这个集合中的元素。在这个样例中，
