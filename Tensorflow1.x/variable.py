@@ -11,6 +11,6 @@ with tf.Session() as session:
     #初始化变量
     init = tf.global_variables_initializer()
     session.run(init)
-    print (session.run([output], feed_dict={input:[7.]}))
+    print (session.run([output], feed_dict={input: [7.]}))
 
 
