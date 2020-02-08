@@ -60,7 +60,7 @@ if __name__ == "__main__":
             #恢复模型的图结构
             saver = tf.train.import_meta_graph('./ckpt_dir/model.meta')
             #恢复模型的参数
-            saver.restore(sess, tf.train.latest_checkpoint('./'))
+            saver.restore(sess, tf.train.latest_checkpoint('../'))
             graph = tf.get_default_graph()
             #通过name获得操作
             operation_to_restore = graph.get_tensor_by_name("predict:0")
