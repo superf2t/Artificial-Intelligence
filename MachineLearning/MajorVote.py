@@ -52,8 +52,7 @@ colors = ['black', 'orange', 'blue', 'green']
 linestyles = [':', '--', '-.', '-']
 plt.figure(figsize=(10, 6))
 for clf, label, clr, ls in zip(all_clf, clf_labels, colors, linestyles):
-    y_pred = clf.predict(X_train, y_train).predict_proba(X_test)
-    y_pred = y_pred[:, 1]
+    y_pred = clf.fit(X_train, y_train).predict_proba(X_test)[:, 1]
     fpr, tpr, thresholds = roc_curve(y_true=y_test, y_score=y_pred)
     roc_auc = auc(x=fpr, y=tpr)
     plt.plot(fpr, tpr, color=clr, linestyle=ls, label='%s(auc=%0.2f)'
@@ -61,7 +60,7 @@ for clf, label, clr, ls in zip(all_clf, clf_labels, colors, linestyles):
 plt.legend(loc='lower right')
 plt.plot([0, 1], [0, 1], linestyle='--', color='gray', linewidth=2)
 plt.xlim([-0.1, 1.1])
-plt.y([-0.1, 1.1])
+plt.ylim([-0.1, 1.1])
 plt.xlabel('False positive rate(RPR)')
 plt.ylabel('True positive rate(TPR')
 plt.show()
