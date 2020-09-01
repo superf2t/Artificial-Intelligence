@@ -13,6 +13,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import RandomForestClassifier
 from mlxtend.classifier import StackingCVClassifier
+from sklearn.ensemble import StackingClassifier
 
 RANDOM_SEED = 42
 
