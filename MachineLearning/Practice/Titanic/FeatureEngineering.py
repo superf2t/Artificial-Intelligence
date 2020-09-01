@@ -10,9 +10,9 @@ test = pd.read_csv("test.csv")
 columns = ['Age', 'Fare', 'Parch', 'SibSp', 'Pclass']
 train_age = train[columns]
 test_age = test[columns]
-train_known_age = train_age[train_age.Age.notnull()].as_matrix()
-train_unknown_age = train_age[train_age.Age.isnull()].as_matrix()
-test_unknown_age = test_age[test_age.Age.isnull()].as_matrix()
+train_known_age = train_age[train_age.Age.notnull()].values
+train_unknown_age = train_age[train_age.Age.isnull()].values
+test_unknown_age = test_age[test_age.Age.isnull()].values
 
 #y即目标年龄
 y = train_known_age[:, 0]
