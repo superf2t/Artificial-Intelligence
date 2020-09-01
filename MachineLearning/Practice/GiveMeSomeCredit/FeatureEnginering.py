@@ -6,8 +6,8 @@ train = pd.read_csv('cs-training.csv')
 test = pd.read_csv('cs-test.csv')
 
 #处理缺失值
-test['NumberOfDependents'].fillna(test['NumberOfDependents'].mode(), inplace=True)
-train['NumberOfDependents'].fillna(train['NumberOfDependents'].mode(), inplace=True)
+test['NumberOfDependents'].fillna(0, inplace=True)
+train['NumberOfDependents'].fillna(0, inplace=True)
 test['MonthlyIncome'].fillna(train['MonthlyIncome'].mean(), inplace=True)
 train['MonthlyIncome'].fillna(train['MonthlyIncome'].mean(), inplace=True)
 
