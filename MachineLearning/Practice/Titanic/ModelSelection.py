@@ -22,7 +22,7 @@ y = train_np[:, 0]
 X = train_np[:, 1:]
 
 # fit到LogisticRegression之中
-clf = LogisticRegression(C=1.0, penalty='l1', tol=1e-6)
+clf = LogisticRegression(C=1.0, penalty='l2', tol=1e-6)
 clf.fit(X, y)
 
 print(cross_val_score(clf, X, y, cv=5))

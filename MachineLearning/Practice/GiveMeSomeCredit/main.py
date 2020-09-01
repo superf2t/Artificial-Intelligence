@@ -62,7 +62,7 @@ train["年龄分层"] = pd.cut(train.age, bins=bins, labels=labels)
 trainsage_groupby = train.pivot_table(values=["age"], index=["年龄分层"], columns=["SeriousDlqin2yrs"], aggfunc=[np.size])
 trainsage_groupby["逾期占比"]=trainsage_groupby.iloc[:, 1]/(trainsage_groupby.iloc[:, 0]+trainsage_groupby.iloc[:, 1])
 trainsage_groupby["合计人数"]=(trainsage_groupby.iloc[:, 0]+trainsage_groupby.iloc[:, 1])
-trainsage_groupby
+
 n1 = []
 n2 = []
 i = j= 0
