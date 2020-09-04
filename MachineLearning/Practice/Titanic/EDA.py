@@ -19,66 +19,68 @@ print(test.info())
 print(train.describe())
 print(test.describe())
 
-# #乘客属性分布
-# plt.figure()
-# sns.countplot(train['Survived'])
-# plt.title('获救情况（1为获救）')
-# plt.ylabel('人数')
-# plt.show()
-#
-# plt.figure()
-# sns.countplot(train['Pclass'])
-# plt.ylabel(u"人数")
-# plt.title(u"乘客等级分布")
-# plt.show()
-#
-# plt.figure()
-# plt.scatter(train.Survived, train.Age)
-# plt.ylabel(u"年龄")                         # 设定纵坐标名称
-# plt.grid(b=True, which='major', axis='y')
-# plt.title(u"按年龄看获救分布 (1为获救)")
-# plt.show()
-#
-# plt.figure()
-# train.Embarked.value_counts().plot(kind='bar')
-# plt.title(u"各登船口岸上船人数")
-# plt.ylabel(u"人数")
-# plt.show()
-#
-# plt.figure()
-# train.Age[train.Pclass == 1].plot(kind='kde')
-# train.Age[train.Pclass == 2].plot(kind='kde')
-# train.Age[train.Pclass == 3].plot(kind='kde')
-# # plots an axis lable
-# plt.xlabel(u"年龄")
-# plt.ylabel(u"密度")
-# plt.title(u"各等级的乘客年龄分布")
-# # sets our legend for our graph.
-# plt.legend((u'头等舱', u'2等舱', u'3等舱'), loc='best')
-# plt.show()
+#乘客获救情况分布
+plt.figure()
+sns.countplot(train['Survived'])
+plt.title('获救情况（1为获救）')
+plt.ylabel('人数')
 
-# #乘客属性与获救结果的关系
-# plt.figure()
-# Survived_0 = train.Pclass[train.Survived == 0].value_counts()
-# Survived_1 = train.Pclass[train.Survived == 1].value_counts()
-# df = pd.DataFrame({u'获救': Survived_1, u'未获救': Survived_0})
-# df.plot(kind='bar', stacked=True)
-# plt.title(u"各乘客等级的获救情况")
-# plt.xlabel(u"乘客等级")
-# plt.ylabel(u"人数")
-# #plt.show()
-# #Pclass == 1获救概率大些
+#乘客Pclass属性
+plt.figure()
+sns.countplot(train['Pclass'])
+plt.ylabel(u"人数")
+plt.title(u"乘客等级分布")
 
+plt.figure()
+Survived_0 = train.Pclass[train.Survived == 0].value_counts()
+Survived_1 = train.Pclass[train.Survived == 1].value_counts()
+df = pd.DataFrame({u'获救': Survived_1, u'未获救': Survived_0})
+df.plot(kind='bar', stacked=True)
+plt.title(u"各乘客等级的获救情况")
+plt.xlabel(u"乘客等级")
+plt.ylabel(u"人数")
+print(train[['Pclass', 'Survived']].groupby('Pclass').mean())
+#Pclass == 1获救概率大些
 
-# plt.figure()
-# Survived_m = train.Survived[train.Sex == 'male'].value_counts()
-# Survived_f = train.Survived[train.Sex == 'female'].value_counts()
-# df = pd.DataFrame({u'男性': Survived_m, u'女性': Survived_f})
-# df.plot(kind='bar', stacked=True)
-# plt.title(u"按性别看获救情况")
-# plt.xlabel(u"性别")
-# plt.ylabel(u"人数")
-# plt.show()
+#乘客name属性
+Name
+
+#乘客age属性
+plt.figure()
+plt.scatter(train.Survived, train.Age)
+plt.ylabel(u"年龄")                         # 设定纵坐标名称
+plt.grid(b=True, which='major', axis='y')
+plt.title(u"按年龄看获救分布 (1为获救)")
+
+plt.figure()
+Survived_m = train.Survived[train.Sex == 'male'].value_counts()
+Survived_f = train.Survived[train.Sex == 'female'].value_counts()
+df = pd.DataFrame({u'男性': Survived_m, u'女性': Survived_f})
+df.plot(kind='bar', stacked=True)
+plt.title(u"按性别看获救情况")
+plt.xlabel(u"性别")
+plt.ylabel(u"人数")
+plt.show()
+print(train[['age', 'Survived']].groupby('age').mean())
+
+#乘客Embarked属性
+plt.figure()
+train.Embarked.value_counts().plot(kind='bar')
+plt.title(u"各登船口岸上船人数")
+plt.ylabel(u"人数")
+plt.show()
+
+plt.figure()
+train.Age[train.Pclass == 1].plot(kind='kde')
+train.Age[train.Pclass == 2].plot(kind='kde')
+train.Age[train.Pclass == 3].plot(kind='kde')
+# plots an axis lable
+plt.xlabel(u"年龄")
+plt.ylabel(u"密度")
+plt.title(u"各等级的乘客年龄分布")
+# sets our legend for our graph.
+plt.legend((u'头等舱', u'2等舱', u'3等舱'), loc='best')
+plt.show()
 
 fig = plt.figure()
 plt.title(u"根据舱等级和性别的获救情况")
@@ -131,4 +133,9 @@ df.plot(kind='bar', stacked=True)
 plt.title(u"按Cabin有无看获救情况")
 plt.xlabel(u"Cabin有无")
 plt.ylabel(u"人数")
+
+train.loc[(train.Cabin.notnull()), 'cabin_flag'] = "Yes"
+train.loc[(train.Cabin.isnull()), 'cabin_flag'] = "No"
+print(train[['cabin_flag', 'Survived']].groupby('cabin_flag').mean())
+
 plt.show()

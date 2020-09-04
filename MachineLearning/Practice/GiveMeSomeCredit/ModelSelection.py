@@ -13,8 +13,8 @@ X = train.iloc[:, 2:].values
 y = train['SeriousDlqin2yrs'].values
 
 #逻辑回归分类器
-params ={ "C" : [0.01, 0.05, 0.1, 0.5, 1.0, 2.0],
-    'penalty' : ['l1', 'l2']
+params ={"C": [0.01, 0.05, 0.1, 0.5, 1.0, 2.0],
+    'penalty': ['l1', 'l2']
 }
 logistic = LogisticRegression(solver='saga', tol=1e-2, max_iter=200,
               random_state=0)
@@ -25,7 +25,7 @@ print("Score:", search.best_params_)
 
 #决策树
 from sklearn.tree import DecisionTreeClassifier
-params = {"max_depth" : [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 20, 40],
+params = {"max_depth": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 20, 40],
        "criterion" : ["gini","entropy"]
 }
 tree = DecisionTreeClassifier(random_state=0)
