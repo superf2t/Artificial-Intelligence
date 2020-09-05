@@ -43,7 +43,7 @@ print(train[['Pclass', 'Survived']].groupby('Pclass').mean())
 #Pclass == 1获救概率大些
 
 #乘客name属性
-Name
+
 
 #乘客age属性
 plt.figure()
