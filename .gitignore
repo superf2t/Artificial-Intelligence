@@ -7,3 +7,6 @@
 *.csv
 *.xls
 *.WIN7
+*.model
+*.tsv
+*.npy

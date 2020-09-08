@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-
+import warnings
+warnings.filterwarnings('ignore')
 import jieba
 import jieba.analyse
 
@@ -41,16 +42,18 @@ sentences = word2vec.LineSentence(root_path.join('data/in_the_name_of_people_seg
 model = word2vec.Word2Vec(sentences, min_count=1, window=3, size=100)
 
 req_count = 5
-for key in model.wv.similar_by_word('沙瑞金'.decode('utf-8'), topn=100):
+for key in model.wv.similar_by_word('沙瑞金', topn=100):
     if len(key[0]) == 3:
         req_count -= 1
         print(key[0], key[1])
         if req_count == 0:
             break
 
-print(model.wv.similarity('沙瑞金'.decode('utf-8'), '高育良'.decode('utf-8')))
-print(model.wv.similarity('李达康'.decode('utf-8'), '王大路'.decode('utf-8')))
+print(model.wv.similarity('沙瑞金', '高育良'))
+print(model.wv.similarity('李达康', '王大路'))
 print(model.wv.doesnt_match(u"沙瑞金 高育良 李达康 刘庆祝".split()))
 
-model.save('text8.model')
-model1 = word2vec.Word2Vec.load('text8.model')
+model.save(root_path.join('data/people.model'))
+model1 = word2vec.Word2Vec.load(root_path.join('data/people.model'))
+print(model.wv.similarity('沙瑞金', '高育良'))
+print(model.wv.similarity('李达康', '王大路'))

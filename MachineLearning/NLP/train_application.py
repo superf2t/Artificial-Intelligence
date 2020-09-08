@@ -4,7 +4,7 @@ import jieba.posseg as pseg
 import numpy as np
 import pandas as pd
 import Levenshtein
-from gensim.models.word2vec import  Word2Vec
+from gensim.models.word2vec import Word2Vec
 from scipy import spatial
 from sklearn.metrics import confusion_matrix
 
@@ -148,7 +148,7 @@ def rule_eval(filepath, df_data, column, expression):
     count = 0
     for data in data_array:
         key = list(data)[0]
-        val = list[data][1]
+        val = list(data)[1]
         rule = rules[rules['ICD4'] == list(data)[0]] #读取对应疾病编码的统计规则
         if len(rule) > 0:
             rule_min = float(rule['min'].tolist()[0])
