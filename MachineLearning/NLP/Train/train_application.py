@@ -188,8 +188,6 @@ for text in texts:
     print('识别实体', result[0])
 
 
-
-
 med_item0 = '尼莫地平 长春西汀 氯化钾 奥扎格雷钠 还原型谷胱甘肽 缬沙坦 地西泮 布洛芬 头孢西丁 艾司唑仑 吲哚美辛'
 med_item1 = '全天麻胶囊(片) 参麦注射液 养血清脑丸(颗粒) 山莨菪碱 倍他司汀 泮托拉唑'
 s1 = avg_feature_vector(med_item0)
@@ -200,9 +198,7 @@ print('诊疗记录2：', med_item1)
 print('诊疗记录相似度：%.2f%%' % (100 * item_simility))
 
 
-
-
-sdata = pd.read_csv('data/训练测试案例(ICD4).csv',engine="python",encoding="utf-8")
+sdata = pd.read_csv('data/训练测试案例(ICD4).csv', engine="python", encoding="utf-8")
 sdata['reason'] = '' #增加一列 reason
 print(sdata.head())
 filepath = 'data/疾病住院费用统计(ICD4).csv'
@@ -213,13 +209,24 @@ sdata = rule_eval(filepath, sdata, 'AGE', '(val>3*rule_50)|(val<0.2*rule_50)')
 print(sdata.head())
 filepath = 'data/疾病住院天数统计(ICD4).csv'
 sdata = rule_eval(filepath, sdata, 'DAYS_OF_STAY', 'val>2.5*rule_75')
-sdata.head()
+print(sdata.head())
 predict = sdata['predict']
 label = sdata['label']
 cnf_matrix = confusion_matrix(label, predict)
-cnf_matrix
+print(cnf_matrix)
 accuracy = (cnf_matrix[0, 0])/(cnf_matrix[0, 0]+cnf_matrix[0, 1])
 recall = (cnf_matrix[0, 0])/(cnf_matrix[0, 0]+cnf_matrix[1, 0])
 print('准确率为: %.2f%%' % (100*accuracy))
 print('召回率为: %.2f%%' % (100*recall))
-sdata.to_csv("result2.csv")
+# tn, fp, fn, tp = confusion_matrix(label, predict).ravel()
+# print(tn, fp, fn, tp)
+# accuracy = tp/(tp + fp)
+# recall = tp/(tp + fn)
+# print('准确率为: %.2f%%' % (100*accuracy))
+# print('召回率为: %.2f%%' % (100*recall))
+# from sklearn.metrics import recall_score
+# from sklearn.metrics import precision_score
+# print('准确率为: %.2f%%' % (100 * precision_score(label, predict)))
+# print('召回率为: %.2f%%' % (100 * recall_score(label, predict)))
+# sdata.to_csv("result2.csv")
+

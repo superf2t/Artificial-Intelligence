@@ -16,9 +16,9 @@ from nltk.corpus import stopwords
 #定义review_to_text函数，完成对原始评论的三项数据预处理任务
 def review_to_text(review,remove_stopwords):
     #任务一：去掉html标记。
-    raw_text = BeautifulSoup(review,'html').get_text()
+    raw_text = BeautifulSoup(review, 'html').get_text()
     #任务二：去掉非字母字符,sub(pattern, replacement, string) 用空格代替
-    letters = re.sub('[^a-zA-Z]',' ',raw_text)
+    letters = re.sub('[^a-zA-Z]', ' ', raw_text)
     #str.split(str="", num=string.count(str)) 通过指定分隔符对字符串进行切片，如果参数 num 有指定值，则仅分隔 num 个子字符串
     #这里是先将句子转成小写字母表示，再按照空格划分为单词list
     words = letters.lower().split()
@@ -54,14 +54,14 @@ from sklearn.model_selection import GridSearchCV
 
 #使用Pipeline搭建两组使用朴素贝叶斯模型的分类器，区别在于分别使用CountVectorizer和TfidfVectorizer对文本特征进行提取
 #[]里面的参数，(a,b)是一种赋值操作，表示 a = b
-pip_count = Pipeline([('count_vec',CountVectorizer(analyzer='word')),('mnb',MultinomialNB())])
-pip_tfidf = Pipeline([('tfidf_vec',TfidfVectorizer(analyzer='word')),('mnb',MultinomialNB())])
+pip_count = Pipeline([('count_vec', CountVectorizer(analyzer='word')), ('mnb', MultinomialNB())])
+pip_tfidf = Pipeline([('tfidf_vec', TfidfVectorizer(analyzer='word')), ('mnb', MultinomialNB())])
 
 #分别配置用于模型超参数搜索的组合
 
 #*****注意:模型名与属性名称之间，一定要用双下划线__连接****
-params_count = {'count_vec__binary':[True,False],'count_vec__ngram_range':[(1,1),(1,2)],'mnb__alpha':[0.1,1.0,10.0]}
-params_tfidf = {'tfidf_vec__binary':[True,False],'tfidf_vec__ngram_range':[(1,1),(1,2)],'mnb__alpha':[0.1,1.0,10.0]}
+params_count = {'count_vec__binary': [True, False], 'count_vec__ngram_range': [(1, 1), (1, 2)], 'mnb__alpha': [0.1, 1.0, 10.0]}
+params_tfidf = {'tfidf_vec__binary': [True, False], 'tfidf_vec__ngram_range': [(1, 1), (1, 2)], 'mnb__alpha': [0.1, 1.0, 10.0]}
 
 #使用4折交叉验证的方式对使用CountVectorizer的朴素贝叶斯模型进行并行化超参数搜索
 gs_count = GridSearchCV(pip_count, params_count, cv=4, n_jobs=-1, verbose=1)
@@ -84,7 +84,7 @@ tfidf_y_predict = gs_tfidf.predict(X_test)
 
 #使用pandas对需要提交的数据进行格式化
 submission_count = pd.DataFrame({'id': test['id'], 'sentiment': count_y_predict})
-submission_count.to_csv('IMDB_data/submission_count.csv', index= False)
+submission_count.to_csv('IMDB_data/submission_count.csv', index=False)
 
 submission_tfidf = pd.DataFrame({'id':test['id'], 'sentiment': tfidf_y_predict})
 submission_tfidf.to_csv('IMDB_data/submission_tfidf.csv', index=False)
@@ -109,9 +109,9 @@ def review_to_sentences(review,tokenizer):
     sentences = []
     #再把每一个句子通过review_to_text进行预处理，去掉不必要的符号，停用词，最终组成新的句子
     for raw_sentence in raw_sentences:
-        if len(raw_sentence)>0:
+        if len(raw_sentence) > 0:
             sentences.append(review_to_text(raw_sentence,False))
-        return sentences
+    return sentences
 
 #corpora(全集)，这里存储所有经过预处理后的句子的集合
 corpora = []
@@ -129,9 +129,9 @@ downsampling = 1e-3
 #从gensim.models力导入word2vec
 from gensim.models import word2vec
 #开始词向量模型的训练，以corpora为训练数据，获得词向量模型
-model = word2vec.Word2Vec(corpora,workers = num_workers,\
-        size = num_features,min_count= min_word_count,\
-        window=context,sample=downsampling)
+model = word2vec.Word2Vec(corpora, workers=num_workers,\
+        size=num_features, min_count=min_word_count,\
+        window=context, sample=downsampling)
 
 model.init_sims(replace=True)
 
@@ -154,26 +154,26 @@ import numpy as np
 #这个方法最终就是将一个句子转成特征向量的形式
 def makeFeatureVec(words,model,num_features):
     #初始化一个300维，类型为float32，元素值全为0的列向量
-    featureVec = np.zeros((num_features,),dtype='float32')
-    nwords=0.
+    feature_vec = np.zeros((num_features,),dtype='float32')
+    nwords = 0.
     #现在用model.wv.index2word来获取词汇表，先前的model.index2word已被废弃！
     index2word_set = set(model.wv.index2word)
     for word in words:
         if word in index2word_set:
-            nwords=nwords+1.
-            featureVec = np.add(featureVec,model[word])
-    featureVec=np.divide(featureVec,nwords)
-    return featureVec
+            nwords = nwords + 1.
+            feature_vec = np.add(feature_vec, model[word])
+    feature_vec = np.divide(feature_vec, nwords)
+    return feature_vec
 
 #将每一条影评句子，转化为基于词向量的特征向量(平均词向量：因为makeFeatureVec()最后除以了单词的个数，所以叫平均词向量)
 #最终返回的是 n 个特征向量的集合
 def getAvgFeatureVecs(reviews,model,num_features):
     counter = 0
-    reviewFeatureVecs=np.zeros((len(reviews),num_features),dtype='float32')
+    review_feature_vecs = np.zeros((len(reviews), num_features), dtype='float32')
     for review in reviews:
-        reviewFeatureVecs[counter] = makeFeatureVec(review,model,num_features)
-        counter+=1
-    return reviewFeatureVecs
+        review_feature_vecs[counter] = makeFeatureVec(review, model, num_features)
+        counter += 1
+    return review_feature_vecs
 
 #将train数据集和test数据集中的review，通过上面构造的词向量模型，转成最终的特征向量模型表示；
 #可以发现，上面的全部操作，就是训练出一个将文本数据转成特征向量表示的模型；
@@ -212,4 +212,4 @@ gs_gbc.fit(trainDataVecs, y_train)
 gbc_y_predict = gs_gbc.predict(testDataVecs)
 submission_gbc = pd.DataFrame({'id': test['id'], 'sentiment': gbc_y_predict})
 #最终的输出，还有加上quoting=3这个属性
-submission_gbc.to_csv('IMDB_data/submission_gbc.csv',index=False)
+submission_gbc.to_csv('IMDB_data/submission_gbc.csv', index=False)

@@ -43,7 +43,7 @@ print("精准模式: " + "/ ".join(seg_list))
 #####词性标注
 import jieba.posseg as pseg
 words = pseg.cut("王超超爱北京天安门")
-for word,flag in words:
+for word, flag in words:
     print('%s %s' % (word, flag))
 
 ######

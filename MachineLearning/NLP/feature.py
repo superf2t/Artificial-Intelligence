@@ -12,7 +12,7 @@ X_train, X_test, y_train, y_test = train_test_split(news.data, news.target, test
 from sklearn.feature_extraction.text import CountVectorizer
 count_vec = CountVectorizer()
 X_count_train = count_vec.fit_transform(X_train)
-X_count_test = count_vec.transform(X_test)
+X_count_test = count_vec.ransform(X_test)
 #使用朴素贝叶斯分类器来训练模型并预测
 from sklearn.naive_bayes import MultinomialNB
 mnb_count = MultinomialNB()
