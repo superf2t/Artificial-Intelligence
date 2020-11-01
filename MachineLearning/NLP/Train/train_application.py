@@ -118,7 +118,7 @@ def extract_entity(text, flag='n'):
     for w, f in segments:
         if f == flag:
             entities.append(w)
-    if len(entities) == 0 :
+    if len(entities) == 0:
         entities.append('None')
     return entities
 
