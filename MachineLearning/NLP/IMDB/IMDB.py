@@ -10,6 +10,7 @@ from bs4 import BeautifulSoup
 import re
 import nltk
 nltk.download('stopwords')
+nltk.download('punkt')
 #从nltk.corpus里导入停用词列表
 from nltk.corpus import stopwords
 
@@ -95,8 +96,6 @@ unlabled_train = pd.read_csv('IMDB_data/unlabeledTrainData.tsv', sep='\t', quoti
 
 #导入nltk.data
 import nltk.data
-import nltk
-nltk.download('punkt')
 
 #准备使用nltk的tokenizer对影评中的英文句子进行分割
 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')

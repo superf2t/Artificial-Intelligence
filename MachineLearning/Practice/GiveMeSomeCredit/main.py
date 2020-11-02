@@ -36,6 +36,9 @@ plt.ylabel('逾期组频数')
 plt.xlabel('总余额比值区间')
 #plt.show()
 
+fig, (axis1, axis2) = plt.subplots(1, 2)
+sns.barplot
+
 plt.figure()
 line0 = train_y0['NumberOfTime30-59DaysPastDueNotWorse'].sort_values(ascending=False)
 line1 = train_y1['NumberOfTime30-59DaysPastDueNotWorse'].sort_values(ascending=False)

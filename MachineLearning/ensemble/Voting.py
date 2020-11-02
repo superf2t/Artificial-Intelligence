@@ -24,8 +24,8 @@ from sklearn.pipeline import Pipeline   # 管道简化工作流
 clf1 = LogisticRegression(penalty='l2', C=0.001, random_state=1)
 clf2 = DecisionTreeClassifier(max_depth=1, criterion="entropy", random_state=0)
 clf3 = KNeighborsClassifier(n_neighbors=1, p=2, metric='minkowski')
-pipe1 = Pipeline([['SC', StandardScaler()], ['clf', clf1]])
-pipe3 = Pipeline([['sc', StandardScaler()], ['cf', clf3]])
+pipe1 = Pipeline([('SC', StandardScaler()), ('clf', clf1)])
+pipe3 = Pipeline([('sc', StandardScaler()), ('cf', clf3)])
 clf_labels = ['Logistic regression', 'Decision tree', 'KNN']
 print('10-folds cross validation :\n')
 for clf, label in zip([pipe1, clf2, pipe3], clf_labels):

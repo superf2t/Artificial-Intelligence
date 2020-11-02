@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import datapreprocess
 
 data_train = pd.read_csv('cs-training.csv')
 
