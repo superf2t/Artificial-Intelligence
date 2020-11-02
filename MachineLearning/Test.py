@@ -1,3 +1,5 @@
+import tensorflow as tf
+print(tf.test.is_gpu_available())
 import numpy as np
 import matplotlib.pyplot as plt
 import math
