@@ -7,4 +7,3 @@ from tensorflow.keras.layers import Dropout, Input
 from tensorflow.keras.initializers import Constant
 
 image_shape = (160, 576)
-def bi

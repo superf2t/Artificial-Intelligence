@@ -1,8 +1,7 @@
 import tensorflow as tf
-import tensorflow as tf
+
 print(tf.test.is_gpu_available())
 
-import tensorflow as tf
 print(tf.__version__)
 
 a = tf.test.is_built_with_cuda()  # 判断CUDA是否可以用
